@@ -222,6 +222,7 @@ void follow_dir(uint16_t cluster, int indent)
 
 int correct_dirent_size(struct direntry *dirent){
     clusters[2]->status = CLUST_FIRST;
+    printf("You hit an Error: THere are multiple references to the same cluster. UH OH!\n");
     return follow_chain(dirent, getushort(dirent->deStartCluster), getulong(dirent->deFileSize));
 }
 
@@ -253,6 +254,9 @@ void write_dirent(struct direntry *dirent, char *fname, uint16_t s_clust, uint32
     }
     if (strlen(newname) > 8) {
         newname[8] = '\0';
+    }
+    if (name2 == NULL){
+        fprintf(stderr, "Sorry, BUT, no filename extension was given. I will now default to .__\n");
     }
     memcpy(dirent->deName, newname, strlen(newname));
     free(name);
